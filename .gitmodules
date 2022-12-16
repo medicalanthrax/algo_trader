@@ -1,0 +1,3 @@
+[submodule "EDGAR_Scraper"]
+	path = EDGAR_Scraper
+	url = https://github.com/medicalanthrax/EDGAR-Database-Insider-Trading-Tracker.git

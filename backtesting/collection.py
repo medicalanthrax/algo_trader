@@ -7,7 +7,6 @@ import sys
 
 import requests
 from tqdm import tqdm
-from ratelimiter import RateLimiter
 
 # sys.path.insert(0, "C:\\Users\\carlo\\coding\\algo_trader\\EDGAR_Scraper")
 sys.path.insert(0, "C:\\Users\\User\\Code\\EDGAR_scraper\\EDGAR-Database-Insider-Trading-Tracker")

@@ -4,12 +4,13 @@ Create a csv file and put them all in, sorted by date.
 import csv
 import multiprocessing
 import sys
+
 import requests
 from tqdm import tqdm
+
 # sys.path.insert(0, "C:\\Users\\carlo\\coding\\algo_trader\\EDGAR_Scraper")
 sys.path.insert(0, "C:\\Users\\User\\Code\\EDGAR_scraper\\EDGAR-Database-Insider-Trading-Tracker")
-from read_data import read_data
-
+from read_data import read_data  # pylint: disable= import_error  #pylint: disable= wrong-import-position
 
 
 def collection(year):

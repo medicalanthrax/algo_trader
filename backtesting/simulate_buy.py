@@ -23,11 +23,12 @@ def simulate_buy(ticker, date, period, amount, api_key="Y08A7DHDJ0Y1SL4G"):
     data = request.json()
 
     nearest_friday = datetime.date.fromisoformat(date)
-    nearest_friday = nearest_friday.replace(
-        day=nearest_friday.day+5-nearest_friday.isoweekday())
+    nearest_friday = nearest_friday+datetime.timedelta(days=5-nearest_friday.isoweekday())
 
     price_at_buy = float(data['Weekly Time Series']
                          [str(nearest_friday)]['4. close'])
     price_at_sell = float(data['Weekly Time Series'][str(
         nearest_friday+datetime.timedelta(weeks=period))]["4. close"])
     return ((price_at_sell/price_at_buy)*amount)-amount
+
+def simulate_buy_alpaca():

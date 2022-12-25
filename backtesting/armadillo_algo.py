@@ -3,7 +3,11 @@ Calculate to see if it outperformed the market. Version 1.
 """
 
 import csv
-from simulate_buy import simulate_buy
+import time
+import alpaca
+import requests
+from tqdm import tqdm
+from simulate_buy import simulate_buy_alpaca
 
 
 def find(data):
@@ -17,7 +21,7 @@ def find(data):
 
     for line in reader:
         try:
-            if "P" in line[4] and "none" not in line[1].lower():
+            if ("P" in line[4] and "none" not in line[1].lower() and "n/a" not in line[1].lower()):
                 good_data.append(line)
         except IndexError:
             print("Index Error")
@@ -33,17 +37,32 @@ def buy(amount, file):
     :return: Returns percentage gain/loss
     """
     data = find(file)
-    amount_for_each = amount/len(data)
+    amt_for_each = amount/len(data)
     total_profit = 0.0
-    for entry in data:
+    for entry in tqdm(data):
         ticker = entry[1][entry[1].find("(")+1:entry[1].find(")")]
         try:
-            simulated = simulate_buy(ticker, entry[0], 26, amount_for_each)
+            simulated = simulate_buy_alpaca(ticker, entry[0], 26, amt_for_each)
         except KeyError:
             print(f"KEY ERROR AT {entry}")
             simulated = 0
-        print(simulated)
+        except requests.exceptions.HTTPError:
+            print(f"HTTPError at {entry}")
+        except alpaca.common.exceptions.APIError:
+            print(f"API Error at {entry}")
+        except requests.exceptions.ConnectionError:
+            print("CONNECTION ERROR")
+            time.sleep(180)
+        except requests.exceptions.ReadTimeout:
+            print("TIMEOUT")
+            time.sleep(180)
+        except TimeoutError:
+            print("timeout")
+            time.sleep(180)
+        except Exception:
+            print("general error")
         total_profit += simulated
+        print(f"total profit: {total_profit} ")
     print(total_profit)
 
 
